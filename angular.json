@@ -26,10 +26,16 @@
               "src/favicon.ico",
               "src/assets"
             ],
-            "styles": [
-              "src/styles.css"
+            "styles": [              
+              "src/custom-theme.scss",
+              "src/styles.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.css"
             ],
-            "scripts": []
+            "scripts": [              
+              "./node_modules/jquery/dist/jquery.js",
+              "./node_modules/popper.js/dist/popper.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -96,7 +102,9 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              
+            ]
           }
         }
       }
