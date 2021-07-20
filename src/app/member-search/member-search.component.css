@@ -1,0 +1,17 @@
+.mat-form-field {
+  display: inline;
+}
+
+.alert div {
+  background-color: #fed3d3;
+  color: #820000;
+  padding: 1rem;
+}
+
+.alert {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  margin-top: -1rem;
+  padding: 0;
+}

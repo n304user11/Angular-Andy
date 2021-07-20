@@ -17,7 +17,7 @@ export class MenuComponent implements OnInit {
   }
 
   setTab(tab: ActiveTabEnum): void {
-    this.tab.activeTab.next(tab)
+    this.tab.activeTabSubject.next(tab)
   }
 
 }

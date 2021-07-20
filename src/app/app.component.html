@@ -1,12 +1,12 @@
 <nav class="navbar navbar-light bg-light">
-  <button class="navbar-toggler" type="button" *ngIf="showMenuIcon" (click)="setTab(setMnu)">
+  <button class="navbar-toggler" type="button" *ngIf="showMenuIcon" (click)="setTab(setMenu)">
     <a routerLink="/menu" class="navbar-toggler-icon"></a>
   </button>
-  <a routerLink="/menu" *ngIf="!showMenuIcon">
+  <a *ngIf="!showMenuIcon">
     <mat-icon>chevron_left</mat-icon>
   </a>
-  
-  <div class="mx-md-auto">
+
+  <div class="mx-auto">
       <span class="navbar-brand mb-0 h1">{{tabName}}</span>
   </div>
 </nav>

@@ -1,1 +1,22 @@
-<p>search-result works!</p>
+<ng-container *ngIf="resultMember">
+  <div class="container" *ngFor="let member of resultMember">
+    <div class="row justify-content-center">
+      <div class="card bg-light mb-3" style="width: 22rem;">
+        <div class="card-body">
+          <p class="card-text">First Name: {{member.firstName}}</p>
+          <p class="card-text">Last Name: {{member.lastName}}</p>
+          <p class="card-text">Date of Birth: {{member.dataOfBirth}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="!resultMember || resultMember.length === 0">
+  <div class="container">
+    <div class="row justify-content-center">
+      <span>No Result Found!</span>
+    </div>
+  </div>
+</ng-container>
+
+

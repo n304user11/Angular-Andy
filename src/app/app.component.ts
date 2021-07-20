@@ -1,47 +1,47 @@
-import { Component } from '@angular/core';
-import { SubjectSubscriber } from 'rxjs/internal/Subject';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { ActiveTabEnum } from './Model/enum';
-import { TabService } from './services/tab.service';
+import { Component, OnInit } from "@angular/core";
+import { Subscription } from "rxjs/internal/Subscription";
+import { ActiveTabEnum } from "./Model/enum";
+import { TabService } from "./services/tab.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
-export class AppComponent {
-  title = 'Southern-Cross-Andy';
-  public tabName = 'Menu';
+export class AppComponent implements OnInit {
+  public tabName = "Menu";
   public showMenuIcon = false;
-  public setMnu = ActiveTabEnum.Menu;
+  public setMenu = ActiveTabEnum.Menu;
 
   private subTab: Subscription = new Subscription();
 
-  constructor(private tab: TabService) { }
-
-  ngOnInit() {
-    this.subTab = this.tab.subActiveTab.subscribe(activeTab => {
+  constructor(private tab: TabService) {
+    this.subTab = this.tab.activeTab$.subscribe(activeTab => {
       switch (activeTab) {
         case ActiveTabEnum.MemberSearch:
-          this.tabName = 'Member Search';
+          this.tabName = "Member Search";
           this.showMenuIcon = true;
           break;
         case ActiveTabEnum.SearchResult:
-          this.tabName = 'Search Results';
+          this.tabName = "Search Results";
           this.showMenuIcon = true;
           break;
         default:
-          this.tabName = 'Menu'
+          this.tabName = "Menu";
           this.showMenuIcon = false;
       }
-    })
+    });
+  }
+
+  ngOnInit() {
+
   }
 
   ngOnDestroy() {
-    this.subTab?.unsubscribe()
+    this.subTab?.unsubscribe();
   }
 
   setTab(tab: ActiveTabEnum): void {
-    this.tab.activeTab.next(tab)
+    this.tab.activeTabSubject.next(tab);
   }
 }
