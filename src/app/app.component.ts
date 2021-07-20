@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Subscription } from "rxjs/internal/Subscription";
 import { ActiveTabEnum } from "./Model/enum";
 import { TabService } from "./services/tab.service";
+import { StatusService } from "./shared/status.service";
 
 @Component({
   selector: "app-root",
@@ -15,7 +16,9 @@ export class AppComponent implements OnInit {
 
   private subTab: Subscription = new Subscription();
 
-  constructor(private tab: TabService) {
+  constructor(
+    private tab: TabService,
+    private statusService: StatusService) {
     this.subTab = this.tab.activeTab$.subscribe(activeTab => {
       switch (activeTab) {
         case ActiveTabEnum.MemberSearch:
@@ -34,7 +37,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.statusService
+      .getStatus()
+      .subscribe((result: any) => {
+        if (result.status === 'ok') {
+          this.statusService.serverStatus.next(true);
+        }
+      });
   }
 
   ngOnDestroy() {

@@ -3,36 +3,37 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, throwError } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { retry, catchError } from 'rxjs/operators';
+import { StatusService } from "../shared/status.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class MemberService {
+export class MemberService extends StatusService {
   public filteredMembers$: BehaviorSubject<Member[]> = new BehaviorSubject<Member[]>([]);
-  private readonly baseUrl =
-    "https://rcvp3-api.azurewebsites.net/members?policyNumber=";
+  private readonly baseUrl = "https://rcvp3-api.azurewebsites.net/members?policyNumber=";
+  private readonly lowdbUrl = "http://localhost:8000/api";
 
-  constructor(private http: HttpClient) {}
-
-  fetchMembers(): Observable<Member[]> {
-    const url = `${this.baseUrl}`;
-    return this.http.get<Member[]>(url)
-    .pipe(
-      retry(1),
-      catchError(this.handleError)
-    )
+  constructor(http: HttpClient) {
+    super(http)
   }
 
-  handleError(error: { error: { message: string; }; status: any; message: any; }) {
-    let errorMessage = "";
-    if (error.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = error.error.message;
+  fetchMembers(): Observable<Member[]> {
+    const url = `${this.lowdbUrl}/member`
+    const status = this.serverStatus.getValue();
+
+    if (status) {
+      return this.http.get<Member[]>(url)
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
     } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      return this.http.get<Member[]>(this.baseUrl)
+      .pipe(
+        retry(1),
+        catchError(this.handleError)
+      )
     }
-    window.alert(errorMessage);
-    return throwError(errorMessage);
+    
   }
 }

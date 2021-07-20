@@ -6,6 +6,7 @@ import { ActiveTabEnum } from '../Model/enum';
 import { TabService } from '../services/tab.service';
 import { Member } from '../Model/member';
 import * as moment from 'moment';
+import { StatusService } from '../shared/status.service';
 
 @Component({
   selector: 'app-member-search',
@@ -13,7 +14,7 @@ import * as moment from 'moment';
   styleUrls: ['./member-search.component.css']
 })
 export class MemberSearchComponent implements OnInit {
-  private foo: Member[] = [];
+  private memberList: Member[] = [];
   memberSearchForm = this.fb.group({
     serviceDate: new FormControl('', Validators.required),
     policyNumber: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
@@ -24,31 +25,46 @@ export class MemberSearchComponent implements OnInit {
     private tab: TabService,
     private fb: FormBuilder,
     private router: Router,
+    private statusService: StatusService,
     private memberService: MemberService
   ) {
-    this.tab.activeTabSubject.next(ActiveTabEnum.MemberSearch)
+    this.tab.activeTabSubject.next(ActiveTabEnum.MemberSearch);    
   }
 
   ngOnInit(): void {
-    this.loadMembers();
+    this.loadMembers();    
   }
 
-  loadMembers() {
-    return this.memberService.fetchMembers().subscribe((data: Member[]) => {
-      this.foo = data;
-
+  loadMembers(): void {
+    this.memberService.fetchMembers().subscribe((data: Member[]) => {
+      this.memberList = data;
     })
   }
 
   searchMember(): void {
     const policyNumber = this.memberSearchForm.get('policyNumber')?.value;
-    const serviceDate = moment(this.memberSearchForm.get('serviceDate')?.value)
-    const bar = this.foo.filter(x =>
-      x.policyNumber.includes(policyNumber)
-      && moment(x.dataOfBirth, "DD/MM/YYYY") < serviceDate
+    const serviceDate = moment(this.memberSearchForm.get('serviceDate')?.value);
+    const memberCardNumber = this.memberSearchForm.get('memberCardNumber')?.value;
+
+    const filteredMembers = this.memberList.filter(x => {
+      if (x.policyNumber === policyNumber && moment(x.dataOfBirth, "DD/MM/YYYY") < serviceDate) {
+        if (memberCardNumber && memberCardNumber !== "") {
+          if (x.memberCardNumber === memberCardNumber) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    }
+
     )
 
-    this.memberService.filteredMembers$.next(bar)
+    this.memberService.filteredMembers$.next(filteredMembers)
     this.router.navigateByUrl('/search-result');
     this.tab.activeTabSubject.next(ActiveTabEnum.SearchResult)
   }
