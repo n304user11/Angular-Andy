@@ -13,6 +13,6 @@ Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.gi
 
 ## Running node expressjs
 
-Run `npm run test` to start express server running on `http://localhost:8000/`.
+Run `node server.js` to start express server running on `http://localhost:8000/`.
 Check server status on `http://localhost:8000/api/status`.
 Retrive member data on `http://localhost:8000/api/member`.
