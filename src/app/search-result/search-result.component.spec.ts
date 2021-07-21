@@ -1,4 +1,6 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Member } from '../Model/member';
 
 import { SearchResultComponent } from './search-result.component';
 
@@ -8,15 +10,18 @@ describe('SearchResultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+      ],
       declarations: [ SearchResultComponent ]
     })
-    .compileComponents();
+    .compileComponents();    
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchResultComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture.detectChanges();    
   });
 
   it('should create', () => {

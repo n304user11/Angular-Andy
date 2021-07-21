@@ -1,6 +1,6 @@
 import { MemberService } from './../services/member.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ActiveTabEnum } from '../Model/enum';
 import { TabService } from '../services/tab.service';
@@ -15,11 +15,7 @@ import { StatusService } from '../shared/status.service';
 })
 export class MemberSearchComponent implements OnInit {
   private memberList: Member[] = [];
-  memberSearchForm = this.fb.group({
-    serviceDate: new FormControl('', Validators.required),
-    policyNumber: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
-    memberCardNumber: new FormControl('')
-  });
+  memberSearchForm!: FormGroup;
 
   constructor(
     private tab: TabService,
@@ -28,11 +24,20 @@ export class MemberSearchComponent implements OnInit {
     private statusService: StatusService,
     private memberService: MemberService
   ) {
-    this.tab.activeTabSubject.next(ActiveTabEnum.MemberSearch);    
+    this.tab.activeTabSubject.next(ActiveTabEnum.MemberSearch);
   }
 
   ngOnInit(): void {
-    this.loadMembers();    
+    this.initMemberSearchForm();
+    this.loadMembers();
+  }
+
+  initMemberSearchForm(): void {
+    this.memberSearchForm = this.fb.group({
+      serviceDate: new FormControl('', Validators.required),
+      policyNumber: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")]),
+      memberCardNumber: new FormControl('')
+    });
   }
 
   loadMembers(): void {

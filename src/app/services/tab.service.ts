@@ -7,9 +7,11 @@ import { ActiveTabEnum } from '../Model/enum';
 })
 export class TabService {
   public activeTabSubject = new Subject<ActiveTabEnum>();
-  public activeTab$: Observable<ActiveTabEnum>;
 
   constructor() {
-    this.activeTab$ = this.activeTabSubject.asObservable();
-   }
+  }
+
+  getTab(): Observable<any> {
+    return this.activeTabSubject.asObservable();
+  }
 }

@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   constructor(
     private tab: TabService,
     private statusService: StatusService) {
-    this.subTab = this.tab.activeTab$.subscribe(activeTab => {
+    this.subTab = this.tab.getTab().subscribe(activeTab => {
       switch (activeTab) {
         case ActiveTabEnum.MemberSearch:
           this.tabName = "Member Search";
