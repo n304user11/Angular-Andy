@@ -1,5 +1,3 @@
-# SouthernCrossAndy
-
 
 ## Development server
 
